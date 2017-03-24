@@ -214,7 +214,6 @@ public abstract class HomePage extends BasePage {
 	public void insertEmployees(){
 		try{
 		log.info("Creating test-data");
-		
 		String sql="INSERT INTO hs_hr_employee(emp_number,employee_id,emp_firstname,emp_lastname)VALUES(90,'90','test','one'),(91,'91','test','two'),(92,'92','test','three')";
 		stmt.executeUpdate(sql);
 		}catch(Exception e){}
