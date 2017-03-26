@@ -36,7 +36,7 @@ public class TestAdminJobWorkshiftListboxes extends BaseTest{
 		//select multiple employee from available employee listbox
 		AddWorkShiftPage awsPage=new AddWorkShiftPage(driver);
 		awsPage.selectAvailableEmpListBox();
-		Thread.sleep(3000);
+		Thread.sleep(1000);
 		
 		//Click on Add button
 		awsPage.clickAddButton();

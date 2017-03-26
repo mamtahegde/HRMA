@@ -43,8 +43,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-
-
 public class Utility {
 
 	public static String getFormatedDateTime() {
@@ -71,6 +69,14 @@ public class Utility {
 		JavascriptExecutor j = (JavascriptExecutor) driver;
 		j.executeScript("arguments[0].click()", e);// refer JavaScriptDemo.java
 													// of dummies package
+	}
+
+	public static boolean checkArrayListHasText(ArrayList<String> allText, String expectedText) {
+		return allText.contains(expectedText);
+	}
+
+	public static boolean checkListContainsList(List<WebElement> listHas, List<WebElement> compareList) {
+		return listHas.containsAll(compareList);
 	}
 
 	public static boolean checkArrayListHasDuplicate(ArrayList<String> allText) {
@@ -267,7 +273,8 @@ public class Utility {
 
 	public static int generateRandomInt(int max) {
 		Random rand = new Random();
-//		int range=(max-minimum)+1; //this statement if there is a range for generating the random number
+		// int range=(max-minimum)+1; //this statement if there is a range for
+		// generating the random number
 		return rand.nextInt(max);
 	}
 
@@ -275,26 +282,28 @@ public class Utility {
 		SimpleDateFormat sDate = new SimpleDateFormat("MMM YYYY");
 		return sDate.format(new Date());
 	}
-	
-	public static ResultSet getMySQLDataBaseColumn(String dbName,String un,String pwd,String tableName,String colName){
-		ResultSet rs=null;
-		try{
-			Statement stmt=Utility.getDBStatement(dbName, un, pwd, tableName);
-			rs=stmt.executeQuery("select "+colName+" from "+tableName);
-//			while(rs.next()) System.out.println(rs.getString(1));
-			
-		}catch(Exception e){		
+
+	public static ResultSet getMySQLDataBaseColumn(String dbName, String un, String pwd, String tableName,
+			String colName) {
+		ResultSet rs = null;
+		try {
+			Statement stmt = Utility.getDBStatement(dbName, un, pwd, tableName);
+			rs = stmt.executeQuery("select " + colName + " from " + tableName);
+			// while(rs.next()) System.out.println(rs.getString(1));
+
+		} catch (Exception e) {
 		}
 		return rs;
 	}
-	
-	public static Statement getDBStatement(String dbName,String un,String pwd,String tableName){
+
+	public static Statement getDBStatement(String dbName, String un, String pwd, String tableName) {
 		Statement stmt = null;
-		try{
+		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection c=DriverManager.getConnection("jdbc:mysql://localhost:3306/"+dbName,un,pwd);
-			stmt=c.createStatement();
-		}catch(Exception e){}
+			Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + dbName, un, pwd);
+			stmt = c.createStatement();
+		} catch (Exception e) {
+		}
 		return stmt;
 	}
 

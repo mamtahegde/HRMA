@@ -16,7 +16,7 @@ public class TestAddUser extends BaseTest {
 
 		DashboardPage dbPage = new DashboardPage(driver);
 		
-		//Note that this test case needs test data 
+		//Note that this test case needs test data
 		
 		//creating test data (1 employee record should be present)
 		dbPage.insertEmployees();
