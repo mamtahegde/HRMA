@@ -52,33 +52,15 @@ public class AddWorkShiftPage extends HomePage{
 		List<WebElement> allAssgned = assigned.getOptions();
 		List<WebElement> allAvailable=available.getOptions();
 		
+		SoftAssert sa=new SoftAssert();
+	    boolean checkAssignedListBox=Utility.checkListContainsList(allAssgned, allSelectedOptions);
+	    System.out.println(checkAssignedListBox);
+	    sa.assertTrue(checkAssignedListBox);
+	    boolean checkAvailableListBox=Utility.checkListContainsList(allAvailable, allSelectedOptions);
+	    System.out.println(checkAvailableListBox);
+	    sa.assertFalse(checkAvailableListBox);
 		
-		//this will check if selected options are added to assigned employee listbox
-		for(int i=0;i<allSelectedOptions.size();i++){
-			String search=allSelectedOptions.get(i).getText();
-			for(int j=0;j<allAssgned.size();j++){
-				if(search.equalsIgnoreCase(allAssgned.get(j).getText())){
-					log.info(search+" is added");
-					break;
-				}
-				
-			}
-				
-		}
-		log.info("Assigned listbox contains added employees");
-		
-		//this will check if selected options are no longer present in available employee list box
-		for(int i=0;i<allSelectedOptions.size();i++){
-			String searchAvail=allSelectedOptions.get(i).getText();
-			for(int j=0;j<allAvailable.size();j++){
-				if(searchAvail!=allAvailable.get(j).getText()){
-					log.info(searchAvail+ " not present in available listbox");
-					break;
-				}
-			}
-			   
-		}
-		
+	    sa.assertAll();
 	}
 	
 }
