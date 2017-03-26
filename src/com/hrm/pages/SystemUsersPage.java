@@ -87,11 +87,10 @@ public class SystemUsersPage extends HomePage {
 	public void deleteFromDB(){
 		System.out.println("Executing");
 		try{
-		String tableName="ohrm_user";
-		Statement stmt2=Utility.getDBStatement("bitnami_orangehrm", "root", "manager", tableName);
+		Statement stmt2=Utility.getDBStatement("bitnami_orangehrm", "root", "manager");
 		//SELECT user_name FROM ohrm_user WHERE user_name<>'admin'  for selecting all employees except admin
 		//DELETE FROM ohrm_user WHERE user_name<>'admin'  for deleting. Note that * is removed before From
-		stmt2.executeUpdate("DELETE FROM "+tableName+" WHERE user_name<>'admin'");
+		stmt2.executeUpdate("DELETE FROM ohrm_user WHERE user_name<>'admin'");
 		}catch(Exception e){}
 	}
 	}

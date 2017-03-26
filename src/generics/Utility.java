@@ -78,6 +78,10 @@ public class Utility {
 	public static boolean checkListContainsList(List<WebElement> listHas, List<WebElement> compareList) {
 		return listHas.containsAll(compareList);
 	}
+	
+	public static boolean checkArrayListHasArrayList(ArrayList<String> listHas,ArrayList<String> thisList){
+		return listHas.containsAll(thisList);
+	}
 
 	public static boolean checkArrayListHasDuplicate(ArrayList<String> allText) {
 		HashSet<String> clone = new HashSet<String>();
@@ -287,7 +291,7 @@ public class Utility {
 			String colName) {
 		ResultSet rs = null;
 		try {
-			Statement stmt = Utility.getDBStatement(dbName, un, pwd, tableName);
+			Statement stmt = Utility.getDBStatement(dbName, un, pwd);
 			rs = stmt.executeQuery("select " + colName + " from " + tableName);
 			// while(rs.next()) System.out.println(rs.getString(1));
 
@@ -296,7 +300,7 @@ public class Utility {
 		return rs;
 	}
 
-	public static Statement getDBStatement(String dbName, String un, String pwd, String tableName) {
+	public static Statement getDBStatement(String dbName, String un, String pwd) {
 		Statement stmt = null;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");

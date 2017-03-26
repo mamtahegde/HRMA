@@ -119,23 +119,15 @@ public class EmpInfoPage extends HomePage {
 
 	public void verifyCSVRecordsImported() throws IOException {
 		log.info("verifying if csv records are imported");
-		boolean flag = false;
+//		boolean flag = false;
 		ArrayList<String> colData = Utility.getExcelCSVColumnValues("./csv/empData.csv", "first_name");
 		// colData.removeIf(name -> name.equalsIgnoreCase("first_name"));
 		// handled in utility
 		System.out.println(colData.size());
 		ArrayList<String> tableData = getEmpTableData("First (& Middle) Name");
-		for (int i = 0; i < colData.size(); i++) {
-			String search = colData.get(i);
-			for (String name : tableData) {
-				if (name.equals(search)) {
-					System.out.println(search + " is added");
-					flag = true;
-					break;
-				}
-			}
-			Assert.assertTrue(flag, search + " is not added");
-		}
+		boolean compareData=Utility.checkArrayListHasArrayList(tableData, colData);
+		Assert.assertTrue(compareData,"Some records not added");
+//		}
 		log.info("All records added");
 	}
 

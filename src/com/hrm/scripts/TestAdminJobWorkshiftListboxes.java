@@ -16,9 +16,7 @@ public class TestAdminJobWorkshiftListboxes extends BaseTest{
 		
 		DashboardPage dbPage=new DashboardPage(driver);
 		
-		//creating the test data
-		dbPage.insertEmployees();
-		
+	
 		//Go to Admin module
 		dbPage.clickAdminModule();
 		
@@ -45,8 +43,6 @@ public class TestAdminJobWorkshiftListboxes extends BaseTest{
 		//check if it is added to assigned employee
 		awsPage.verifyAddedEmployee();
 		
-		//clearing test data
-		dbPage.deleteAllEmployees();
 		
 	}
 

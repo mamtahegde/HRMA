@@ -16,11 +16,6 @@ public class TestAddUser extends BaseTest {
 
 		DashboardPage dbPage = new DashboardPage(driver);
 		
-		//Note that this test case needs test data
-		
-		//creating test data (1 employee record should be present)
-		dbPage.insertEmployees();
-
 		// click on admin module
 		dbPage.clickAdminModule();
 
@@ -61,7 +56,5 @@ public class TestAddUser extends BaseTest {
         //have written code to delete from db for script execution purposes
         log.info("Deleted all users");
         
-        //clearing test-data
-        dbPage.deleteAllEmployees();
-	}
+    	}
 }

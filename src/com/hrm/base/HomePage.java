@@ -82,7 +82,7 @@ public abstract class HomePage extends BasePage {
 		super(driver);
 	}
 	
-	Statement stmt=Utility.getDBStatement("bitnami_orangehrm", "root", "manager", "hs_hr_employee");
+	Statement stmt=Utility.getDBStatement("bitnami_orangehrm", "root", "manager");
 
 	public void clickAddEmp_Menu() {
 		addEmp_Menu.click();
@@ -209,21 +209,6 @@ public abstract class HomePage extends BasePage {
 				
 			}
 		return allEmp;
-	}
-	
-	public void insertEmployees(){
-		try{
-		log.info("Creating test-data");
-		String sql="INSERT INTO hs_hr_employee(emp_number,employee_id,emp_firstname,emp_lastname)VALUES(90,'90','test','one'),(91,'91','test','two'),(92,'92','test','three')";
-		stmt.executeUpdate(sql);
-		}catch(Exception e){}
-	}
-	
-	public void deleteAllEmployees(){
-		try{
-			log.info("Clearing test data");
-			stmt.executeUpdate("Delete From hs_hr_employee where 1");
-		}catch(Exception e){}
 	}
 	
 	

@@ -37,12 +37,5 @@ public class VerifyCSVUpload extends BaseTest {
 		
 		//verify if the records are imported
 		eiPage.verifyCSVRecordsImported();
-		
-		Thread.sleep(3000);
-		//delete added records
-		log.info("Deleting all records");
-		eiPage.clickSelectAllChckBox();
-		eiPage.clickDelete();
-		eiPage.clickOK();
 	}
 }

@@ -1,6 +1,8 @@
 package com.hrm.base;
 
 import java.lang.reflect.Method;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.concurrent.TimeUnit;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
@@ -33,11 +35,15 @@ public abstract class BaseTest implements AutomationConstants{
 	public WebDriver driver;
 	public ExtentTest eTest;
 	public String reportFile;
-	
+	public String empTable="hs_hr_employee";
+		
 	public static Logger log;
 	public static String url;
 	public static String un;
 	public static String pw;
+	public static String dbName;
+	public static String dbUserName;
+	public static String dbPwd;
 	public static long iTimeout;
 	public static long eTimeout;
 	public static ExtentReports eReport;
@@ -73,6 +79,9 @@ public abstract class BaseTest implements AutomationConstants{
 		pw=Utility.getPropertyValue(CONFIG_PATH,"PW");
 		iTimeout=Long.parseLong(Utility.getPropertyValue(CONFIG_PATH,"IMPLICIT"));
 		eTimeout=Long.parseLong(Utility.getPropertyValue(CONFIG_PATH,"EXPLICIT"));
+		dbName=Utility.getPropertyValue(CONFIG_PATH, "DBNAME");
+		dbUserName=Utility.getPropertyValue(CONFIG_PATH,"DBUN");
+		dbPwd=Utility.getPropertyValue(CONFIG_PATH,"DBPASSWORD");
 	}
 	
 	@Parameters({"browser"})
@@ -106,6 +115,24 @@ public abstract class BaseTest implements AutomationConstants{
 		}
 		eTest=eReport.startTest(method.getName());
 		log.info("Started executing test:"+method.getName());
+		log.info("Creating test data");
+		int rc=Utility.getExcelRowCount(INPUT_PATH, "InsertEmployees");
+		Statement stmt=Utility.getDBStatement(dbName, dbUserName, dbPwd);
+		String dataSheet="InsertEmployees";
+		for(int i=1;i<=rc;i++){
+			int eNumber=Math.round(Float.parseFloat(Utility.getExcelCellValue(INPUT_PATH, dataSheet, i, 0)));
+//			String eID=Utility.getExcelCellValue(INPUT_PATH, dataSheet, i, 1);
+			String eFName=Utility.getExcelCellValue(INPUT_PATH, dataSheet, i, 2);
+			String eLName=Utility.getExcelCellValue(INPUT_PATH, dataSheet, i, 3);
+
+			String insert="Insert into "+empTable+"(emp_number,employee_id,emp_firstname,emp_lastname)VALUES("+eNumber+",'"+eNumber+"','"
+					+eFName+"','"+eLName+"');";
+			
+			try {
+				stmt.executeUpdate(insert);
+			} catch (SQLException e) {
+			}
+		}
 	}
 	
 	@AfterMethod
@@ -126,6 +153,12 @@ public abstract class BaseTest implements AutomationConstants{
 			eTest.log(LogStatus.PASS,"Script executed successfully");
 			log.info("Test is PASSED");
 		}
+		log.info("Clearing test-data");
+		try{
+			Statement stmt=Utility.getDBStatement(dbName, dbName, dbPwd);
+			String sql="Delete from "+empTable+"where 1;";
+			stmt.executeUpdate(sql);
+		}catch(Exception e){}
 		if(logoutRequired){
 			log.info("Auto logout");
 			new DashboardPage(driver).logout();
