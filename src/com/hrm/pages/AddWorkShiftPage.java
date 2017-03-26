@@ -54,11 +54,9 @@ public class AddWorkShiftPage extends HomePage{
 		
 		SoftAssert sa=new SoftAssert();
 	    boolean checkAssignedListBox=Utility.checkListContainsList(allAssgned, allSelectedOptions);
-	    System.out.println(checkAssignedListBox);
-	    sa.assertTrue(checkAssignedListBox);
+	    sa.assertTrue(checkAssignedListBox,"Element missing");
 	    boolean checkAvailableListBox=Utility.checkListContainsList(allAvailable, allSelectedOptions);
-	    System.out.println(checkAvailableListBox);
-	    sa.assertFalse(checkAvailableListBox);
+	    sa.assertFalse(checkAvailableListBox,"Element still present after adding");
 		
 	    sa.assertAll();
 	}
