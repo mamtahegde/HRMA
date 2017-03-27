@@ -35,8 +35,7 @@ public abstract class BaseTest implements AutomationConstants{
 	public WebDriver driver;
 	public ExtentTest eTest;
 	public String reportFile;
-	public String empTable="hs_hr_employee";
-		
+			
 	public static Logger log;
 	public static String url;
 	public static String un;
@@ -116,24 +115,10 @@ public abstract class BaseTest implements AutomationConstants{
 		eTest=eReport.startTest(method.getName());
 		log.info("Started executing test:"+method.getName());
 		log.info("Creating test data");
-		int rc=Utility.getExcelRowCount(INPUT_PATH, "InsertEmployees");
 		Statement stmt=Utility.getDBStatement(dbName, dbUserName, dbPwd);
-		String dataSheet="InsertEmployees";
-		for(int i=1;i<=rc;i++){
-			int eNumber=Math.round(Float.parseFloat(Utility.getExcelCellValue(INPUT_PATH, dataSheet, i, 0)));
-//			String eID=Utility.getExcelCellValue(INPUT_PATH, dataSheet, i, 1);
-			String eFName=Utility.getExcelCellValue(INPUT_PATH, dataSheet, i, 2);
-			String eLName=Utility.getExcelCellValue(INPUT_PATH, dataSheet, i, 3);
-
-			String insert="Insert into "+empTable+"(emp_number,employee_id,emp_firstname,emp_lastname)VALUES("+eNumber+",'"+eNumber+"','"
-					+eFName+"','"+eLName+"');";
-			
-			try {
-				stmt.executeUpdate(insert);
-			} catch (SQLException e) {
-			}
+		Utility.insertIntoDBTableFromExcel(stmt, DB_TEST_PATH, "hs_hr_employee", 0);
 		}
-	}
+
 	
 	@AfterMethod
 	public void postCondition(ITestResult testNGTestResult){
@@ -156,8 +141,7 @@ public abstract class BaseTest implements AutomationConstants{
 		log.info("Clearing test-data");
 		try{
 			Statement stmt=Utility.getDBStatement(dbName, dbName, dbPwd);
-			String sql="Delete from "+empTable+"where 1;";
-			stmt.executeUpdate(sql);
+			Utility.deleteAllTableData(stmt, DB_TEST_PATH, "hs_hr_employee");
 		}catch(Exception e){}
 		if(logoutRequired){
 			log.info("Auto logout");

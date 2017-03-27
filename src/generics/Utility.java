@@ -13,6 +13,7 @@ import java.io.Reader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -78,8 +79,8 @@ public class Utility {
 	public static boolean checkListContainsList(List<WebElement> listHas, List<WebElement> compareList) {
 		return listHas.containsAll(compareList);
 	}
-	
-	public static boolean checkArrayListHasArrayList(ArrayList<String> listHas,ArrayList<String> thisList){
+
+	public static boolean checkArrayListHasArrayList(ArrayList<String> listHas, ArrayList<String> thisList) {
 		return listHas.containsAll(thisList);
 	}
 
@@ -167,6 +168,15 @@ public class Utility {
 			e.printStackTrace();
 		}
 		return v;
+	}
+
+	public static short getExcelColumnCount(String path, String sheet, int row) {
+		short c = 0;
+		try {
+			c = WorkbookFactory.create(new FileInputStream(path)).getSheet(sheet).getRow(row).getLastCellNum();
+		} catch (Exception e) {
+		}
+		return c;
 	}
 
 	public static boolean switchBrowser(WebDriver driver, String eTitle) { // based
@@ -309,6 +319,23 @@ public class Utility {
 		} catch (Exception e) {
 		}
 		return stmt;
+	}
+
+	public static void insertIntoDBTableFromExcel(Statement stmt, String xlPath, String tableName, int xlCol) {
+		int rowCount = Utility.getExcelRowCount(xlPath, tableName);
+		for (int i = 1; i <= rowCount; i++) {
+			try {
+				stmt.executeUpdate(Utility.getExcelCellValue(xlPath, tableName, i, xlCol));
+			} catch (Exception e) {
+			}
+		}
+	}
+	
+	public static void deleteAllTableData(Statement stmt,String xlPath,String tableName){
+		try {
+			stmt.executeUpdate(Utility.getExcelCellValue(xlPath, tableName, 1, 1));
+		} catch (SQLException e) {
+		}
 	}
 
 }

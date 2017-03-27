@@ -20,4 +20,6 @@ public interface AutomationConstants
 	
 	public static  final String SNAP_PATH="./snap/";
 	
+	public static final String DB_TEST_PATH="./data/DataBase.xlsx";
+	
 }
