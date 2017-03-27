@@ -327,7 +327,7 @@ public class Utility {
 			try {
 				stmt.executeUpdate(Utility.getExcelCellValue(xlPath, tableName, i, xlCol));
 			} catch (Exception e) {
-			}
+			}//
 		}
 	}
 	

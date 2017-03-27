@@ -126,7 +126,7 @@ public abstract class BaseTest implements AutomationConstants{
 		{
 			String imgPath = Utility.getScreenShot(REPORT_PATH);
 			System.out.println(imgPath);
-//			Utility.getScreenShot(SNAP_PATH);
+//			Utility.getScreenShot(SNAP_PATH);//
 //		    Utility.getScreenShot(driver, SNAP_PATH);
 			String path = eTest.addScreenCapture("."+imgPath);
 			System.out.println(path);
