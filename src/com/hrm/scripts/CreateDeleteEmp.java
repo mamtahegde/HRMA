@@ -17,7 +17,7 @@ public class CreateDeleteEmp extends BaseTest {
 
 		EmpInfoPage eiPage = new EmpInfoPage(driver);
 		eiPage.clickAddEmp_Menu();
-		
+
 		log.info("Creating Employee");
 		AddEmpPage aePage = new AddEmpPage(driver);
 		aePage.setFirstName("mamta");

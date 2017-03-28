@@ -29,12 +29,12 @@ import generics.TestListener;
 import generics.Utility;
 
 @Listeners(TestListener.class)
-public abstract class BaseTest implements AutomationConstants{
-	
+public abstract class BaseTest implements AutomationConstants {
+
 	public WebDriver driver;
 	public ExtentTest eTest;
 	public String reportFile;
-			
+
 	public static Logger log;
 	public static String url;
 	public static String un;
@@ -45,114 +45,102 @@ public abstract class BaseTest implements AutomationConstants{
 	public static long iTimeout;
 	public static long eTimeout;
 	public static ExtentReports eReport;
-	
-	public boolean loginRequired=true;
-	public boolean logoutRequired=true;
-	
+
+	public boolean loginRequired = true;
+	public boolean logoutRequired = true;
+
 	public BaseTest() {
-		log=Logger.getLogger(this.getClass());
+		log = Logger.getLogger(this.getClass());
 	}
-	
+
 	@BeforeSuite
-	public void initReport()
-	{
+	public void initReport() {
 		log.info("Initializing ExtentReport");
-		String now=Utility.getFormatedDateTime();
-		reportFile=REPORT_PATH+now+".html";
-		eReport=new ExtentReports(reportFile);
+		String now = Utility.getFormatedDateTime();
+		reportFile = REPORT_PATH + now + ".html";
+		eReport = new ExtentReports(reportFile);
 	}
-	
+
 	@AfterSuite
-	public void publishReport()
-	{
-		log.info("Publishing ExtentReport:"+reportFile);
+	public void publishReport() {
+		log.info("Publishing ExtentReport:" + reportFile);
 		eReport.flush();
 	}
-	
+
 	@BeforeTest
-	public void initGlobalVar(){
+	public void initGlobalVar() {
 		log.info("Initialize Global Variables");
-		url=Utility.getPropertyValue(CONFIG_PATH,"URL");
-		un=Utility.getPropertyValue(CONFIG_PATH,"UN");
-		pw=Utility.getPropertyValue(CONFIG_PATH,"PW");
-		iTimeout=Long.parseLong(Utility.getPropertyValue(CONFIG_PATH,"IMPLICIT"));
-		eTimeout=Long.parseLong(Utility.getPropertyValue(CONFIG_PATH,"EXPLICIT"));
-		dbName=Utility.getPropertyValue(CONFIG_PATH, "DBNAME");
-		dbUserName=Utility.getPropertyValue(CONFIG_PATH,"DBUN");
-		dbPwd=Utility.getPropertyValue(CONFIG_PATH,"DBPASSWORD");
+		url = Utility.getPropertyValue(CONFIG_PATH, "URL");
+		un = Utility.getPropertyValue(CONFIG_PATH, "UN");
+		pw = Utility.getPropertyValue(CONFIG_PATH, "PW");
+		iTimeout = Long.parseLong(Utility.getPropertyValue(CONFIG_PATH, "IMPLICIT"));
+		eTimeout = Long.parseLong(Utility.getPropertyValue(CONFIG_PATH, "EXPLICIT"));
+		dbName = Utility.getPropertyValue(CONFIG_PATH, "DBNAME");
+		dbUserName = Utility.getPropertyValue(CONFIG_PATH, "DBUN");
+		dbPwd = Utility.getPropertyValue(CONFIG_PATH, "DBPASSWORD");
 	}
-	
-	@Parameters({"browser"})
+
+	@Parameters({ "browser" })
 	@BeforeClass
-	public void initApplication(@Optional("chrome")String browser){
-		log.info("Opening Browser:"+browser);
-		if(browser.equals("chrome")){
-			System.setProperty(CHROME_KEY,CHROME_VALUE);
-			driver=new ChromeDriver();
+	public void initApplication(@Optional("chrome") String browser) {
+		log.info("Opening Browser:" + browser);
+		if (browser.equals("chrome")) {
+			System.setProperty(CHROME_KEY, CHROME_VALUE);
+			driver = new ChromeDriver();
+		} else {
+			System.setProperty(GECKO_KEY, GECKO_VALUE);
+			driver = new FirefoxDriver();
 		}
-		else{
-			System.setProperty(GECKO_KEY,GECKO_VALUE);
-			driver=new FirefoxDriver();
-		}
-		driver.manage().timeouts().implicitlyWait(iTimeout,TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(iTimeout, TimeUnit.SECONDS);
 		driver.manage().window().maximize();
 	}
 
 	@AfterClass
-	public void closeApplication(){
+	public void closeApplication() {
 		log.info("Closing Browser");
 		driver.quit();
 	}
-	
-	@BeforeMethod
-	public void preCondition(Method method){
-		driver.get(url);
-		if(loginRequired){
-			log.info("Auto login");
-			new LoginPage(driver).login(un,pw);
-		}
-		eTest=eReport.startTest(method.getName());
-		log.info("Started executing test:"+method.getName());
-		log.info("Creating test data");
-		Statement stmt=Utility.getDBStatement(dbName, dbUserName, dbPwd);
-		Utility.insertIntoDBTableFromExcel(stmt, DB_TEST_PATH, "hs_hr_employee", 0);
-		}
 
-	
+	@BeforeMethod
+	public void preCondition(Method method) {
+		driver.get(url);
+		if (loginRequired) {
+			log.info("Auto login");
+			new LoginPage(driver).login(un, pw);
+		}
+		eTest = eReport.startTest(method.getName());
+		log.info("Started executing test:" + method.getName());
+		log.info("Creating test data");
+		Statement stmt = Utility.getDBStatement(dbName, dbUserName, dbPwd);
+		Utility.insertIntoDBTableFromExcel(stmt, DB_TEST_PATH, "hs_hr_employee", 0);
+	}
+
 	@AfterMethod
-	public void postCondition(ITestResult testNGTestResult){
-		if(testNGTestResult.getStatus()==ITestResult.FAILURE)
-		{
+	public void postCondition(ITestResult testNGTestResult) {
+		if (testNGTestResult.getStatus() == ITestResult.FAILURE) {
 			String imgPath = Utility.getScreenShot(REPORT_PATH);
 			System.out.println(imgPath);
-//			Utility.getScreenShot(SNAP_PATH);//
-//		    Utility.getScreenShot(driver, SNAP_PATH);
-			String path = eTest.addScreenCapture("."+imgPath);
+			// Utility.getScreenShot(SNAP_PATH);//
+			// Utility.getScreenShot(driver, SNAP_PATH);
+			String path = eTest.addScreenCapture("." + imgPath);
 			System.out.println(path);
-			eTest.log(LogStatus.FAIL,"Check log for details",path);
+			eTest.log(LogStatus.FAIL, "Check log for details", path);
 			log.error("Test is FAILED");
-		}
-		else
-		{
-			eTest.log(LogStatus.PASS,"Script executed successfully");
+		} else {
+			eTest.log(LogStatus.PASS, "Script executed successfully");
 			log.info("Test is PASSED");
 		}
 		log.info("Clearing test-data");
-		try{
-			Statement stmt=Utility.getDBStatement(dbName, dbName, dbPwd);
+		try {
+			Statement stmt = Utility.getDBStatement(dbName, dbName, dbPwd);
 			Utility.deleteAllTableData(stmt, DB_TEST_PATH, "hs_hr_employee");
-		}catch(Exception e){}
-		if(logoutRequired){
+		} catch (Exception e) {
+		}
+		if (logoutRequired) {
 			log.info("Auto logout");
 			new DashboardPage(driver).logout();
 		}
-		
-		
+
 		eReport.endTest(eTest);
 	}
 }
-
-
-
-
-
