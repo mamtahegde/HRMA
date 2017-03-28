@@ -327,11 +327,11 @@ public class Utility {
 			try {
 				stmt.executeUpdate(Utility.getExcelCellValue(xlPath, tableName, i, xlCol));
 			} catch (Exception e) {
-			}//
+			} //
 		}
 	}
-	
-	public static void deleteAllTableData(Statement stmt,String xlPath,String tableName){
+
+	public static void deleteAllTableData(Statement stmt, String xlPath, String tableName) {
 		try {
 			stmt.executeUpdate(Utility.getExcelCellValue(xlPath, tableName, 1, 1));
 		} catch (SQLException e) {
