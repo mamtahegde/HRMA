@@ -1,7 +1,6 @@
 package com.hrm.base;
 
 import java.lang.reflect.Method;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.concurrent.TimeUnit;
 import org.apache.log4j.Logger;

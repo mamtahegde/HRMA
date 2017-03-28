@@ -1,5 +1,5 @@
-<suite name="Suite">
-  <test name="Test">
+<suite name="Suite" parallel="tests">
+  <test name="Test1">
     <classes>
       <class name="com.hrm.scripts.TestJobTitle"/>
       <class name="com.hrm.scripts.VerifyFromDate"/>
@@ -8,13 +8,17 @@
       <class name="com.hrm.scripts.TestWeekListBoxIsSorted"/>
       <class name="com.hrm.scripts.TestTargetLanguage"/>
       <class name="com.hrm.scripts.CreateDeleteMultipleEmployees"/>
-      <class name="com.hrm.scripts.TestAddUser"/>
+    </classes>
+  </test>
+  <test name="Test2">
+  <classes>
+  <class name="com.hrm.scripts.TestAddUser"/>
       <class name="com.hrm.scripts.TestAdminJobWorkshiftListboxes"/>
       <class name="com.hrm.scripts.TestIncludeListBox"/>
       <class name="com.hrm.scripts.TestSearchBtnIsPresent"/>
       <class name="com.hrm.scripts.CreateDeleteEmp"/>
       <class name="com.hrm.scripts.TestVacanciesOptions"/>
       <class name="com.hrm.scripts.VerifyCSVUpload"/>
-    </classes>
-  </test>
+      </classes>
+      </test>
 </suite>
